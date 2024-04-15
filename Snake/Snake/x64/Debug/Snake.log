@@ -1,0 +1,7 @@
+﻿  timer.cpp
+D:\projects\Snake\Snake\src\timer\timer.cpp(18,14): warning C4244: инициализация: преобразование "_Rep" в "int", возможна потеря данных
+          with
+          [
+              _Rep=__int64
+          ]
+  Snake.vcxproj -> D:\projects\Snake\x64\Debug\Snake.exe
