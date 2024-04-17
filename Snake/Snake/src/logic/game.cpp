@@ -4,7 +4,8 @@
 #include <thread>
 #include <chrono>
 
-std::mutex snakeMutex;
+
+std::mutex moveMutex;
 
 bool Game::cellIsSnake(const Snake& snake, Point<int> point)
 {
@@ -41,9 +42,19 @@ void Game::FuncTimer()
 {
 	GraphicsGame::clearSnake(snake);
 	
+	moveMutex.lock();
+	
 	snake.move();
 
+	moveMutex.unlock();
+
 	GraphicsGame::drawSnake(snake);
+
+	for (int i = 0; i < apples.size(); i++)
+		GraphicsGame::drawApple(apples[i]);
+
+	GraphicsGame::clearGamePoints(gamePoints);
+	GraphicsGame::drawGamePoints(gamePoints);
 
 }
 
@@ -221,13 +232,16 @@ void Game::start()
 			break;
 		}
 		
+		moveMutex.lock();
+
 		if (crashWall())
 		{
 			timer.stop();
-			
+			moveMutex.unlock();
 			break;
 		}
-		
+		moveMutex.unlock();
+
 		int idApple = getIdEatApple();
 
 		if (idApple != -1)
@@ -237,18 +251,16 @@ void Game::start()
 			
 			snake.addLength(1);
 			gamePoints.addPoint(100);
-			
 			createApple();
-
-			for (int i = 0; i < apples.size(); i++)
-				GraphicsGame::drawApple(apples[i]);
-
-			GraphicsGame::clearGamePoints(gamePoints);
-			GraphicsGame::drawGamePoints(gamePoints);
 		}
 		
 	}
 
+}
+
+int Game::getGamePoints()
+{
+	return gamePoints.getGamePoint();
 }
 
 Game::~Game() 

@@ -34,14 +34,21 @@ void Timer::start()
 	isStop = false;
 
 	timer = std::thread([this] {tick(); });
-
-	timer.detach();
-
 }
 
 void Timer::stop()
 {
 	isStop = true;
+	
+	if (timer.joinable())
+		timer.join();
+
 }
+
+Timer::~Timer()
+{
+	stop();
+}
+
 
 

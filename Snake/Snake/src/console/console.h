@@ -16,33 +16,30 @@ class Console
 		HANDLE console;
 		DWORD colorText;
 		DWORD colorBackgroundText;
-
 	private:
 		Console();
-		
-	
-
-	public:
-		
-		void setEncodingConsoleOutput(UINT encodingPageId);
-		void setEncodingConsoleInput(UINT encodingPageId);
-
+	public:	
 		int getWidth() const;
 		int getHeight() const;
-
+	public:
 		void setTitle(std::wstring title);
+		void setEncodingConsoleOutput(UINT encodingPageId);
+		void setEncodingConsoleInput(UINT encodingPageId);
 		void setColorText(DWORD color);
 		void setBackgroundText(DWORD color);
 		void fillConsole(DWORD color, DWORD widthFillRect, int x, int y);
 		void setCursor(int x, int y);
 		void clear();
 		void setCursorVisible(bool turnOn);
-
-
+	public:
 		friend ConsoleInit;
-
+	public:
 		template<class T>
 		std::wostream& operator<<(T& type);
+
+		template<class T>
+		std::wistream& operator>>(T& type);
+
 };
 
 class ConsoleInit
@@ -71,4 +68,11 @@ std::wostream& Console::operator<<(T& type)
 	return std::wcout;
 }
 
+template<class T>
+std::wistream& Console::operator>>(T& type)
+{
+	std::wcin >> type;
+
+	return std::wcin;
+}
 

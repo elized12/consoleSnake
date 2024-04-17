@@ -33,6 +33,7 @@ class Game
 		Game(NameMap name, timeMills speed, int startLength);
 	public:
 		void start();
+		int getGamePoints();
 	public:
 		~Game();
 };
